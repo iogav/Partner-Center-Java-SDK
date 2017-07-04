@@ -1,0 +1,5 @@
+include 'partnersdk'
+include 'partnersdk-samples'
+
+project(':partnersdk').projectDir = new File('PartnerSdk')
+project(':partnersdk-samples').projectDir = new File('Samples')
