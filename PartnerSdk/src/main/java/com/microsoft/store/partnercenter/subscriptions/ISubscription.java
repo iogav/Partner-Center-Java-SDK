@@ -18,46 +18,56 @@ import com.microsoft.store.partnercenter.utilization.IUtilizationCollection;
 /**
  * This interface defines the operations available on a customer's subscription.
  */
-public interface ISubscription
-    extends IPartnerComponent<Tuple<String, String>>, IEntityGetOperations<Subscription>,
-    IEntityPatchOperations<Subscription>
-{
-    /**
-     * Gets the current subscription's add-ons operations.
-     */
-    ISubscriptionAddOnCollection getAddOns();
+public interface ISubscription extends
+		IPartnerComponent<Tuple<String, String>>,
+		IEntityGetOperations<Subscription>,
+		IEntityPatchOperations<Subscription> {
+	/**
+	 * Gets the current subscription's add-ons operations.
+	 */
+	ISubscriptionAddOnCollection getAddOns();
 
-    /**
-     * Gets the current subscription's upgrade operations.
-     */
-    ISubscriptionUpgradeCollection getUpgrades();
+	/**
+	 * Gets the current subscription's upgrade operations.
+	 */
+	ISubscriptionUpgradeCollection getUpgrades();
 
-    /**
-     * Gets the current subscription's resource usage records operations.
-     */
-    ISubscriptionUsageRecordCollection getUsageRecords();
+	/**
+	 * Gets the current subscription's resource usage records operations.
+	 */
+	ISubscriptionUsageRecordCollection getUsageRecords();
 
-    /**
-     * Gets the current subscription's usage summary operations.
-     */
-    ISubscriptionUsageSummary getUsageSummary();
-    
-    /***
-     * Gets the current subscription's utilization operations.
-     */
-    IUtilizationCollection getUtilization();
-    
-    /***
-     * Retrieves the subscription.
-     * @return The subscription.
-     */
-    Subscription get();
+	/**
+	 * Gets the current subscription's usage summary operations.
+	 */
+	ISubscriptionUsageSummary getUsageSummary();
 
-    /***
-     * Patches the subscription.
-     * @param subscription A subscription that has the properties to be patched set.
-     * @return The updated subscription.
-     */
-    Subscription patch( Subscription subscription );
+	/***
+	 * Gets the current subscription's utilization operations.
+	 */
+	IUtilizationCollection getUtilization();
+
+	/**
+	 * Gets the current subscription's provisioning status operations.
+	 */
+	ISubscriptionProvisioningStatus getProvisioningStatus();
+
+	/***
+	 * Retrieves the subscription.
+	 * 
+	 * @return The subscription.
+	 */
+	@Override
+	Subscription get();
+
+	/***
+	 * Patches the subscription.
+	 * 
+	 * @param subscription
+	 *            A subscription that has the properties to be patched set.
+	 * @return The updated subscription.
+	 */
+	@Override
+	Subscription patch(Subscription subscription);
 
 }

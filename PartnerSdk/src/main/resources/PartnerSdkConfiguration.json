@@ -79,6 +79,9 @@
         "GetSubscriptionResourceUsageRecords": {
             "Path": "customers/{0}/subscriptions/{1}/usagerecords/resources"
         },
+        "GetSubscriptionProvisionStatus": {
+            "Path": "customers/{0}/subscriptions/{1}/provisioningstatus"
+        },
         "UpdateSubscription": {
             "Path": "customers/{0}/subscriptions/{1}",
             "Parameters": {
