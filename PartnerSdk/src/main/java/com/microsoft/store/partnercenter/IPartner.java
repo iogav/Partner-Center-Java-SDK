@@ -6,6 +6,7 @@
 
 package com.microsoft.store.partnercenter;
 
+import com.microsoft.store.partnercenter.analytics.IPartnerAnalyticsCollection;
 import com.microsoft.store.partnercenter.auditrecords.IAuditRecordsCollection;
 import com.microsoft.store.partnercenter.countryvalidationrules.ICountryValidationRulesCollection;
 import com.microsoft.store.partnercenter.customers.ICustomerCollection;
@@ -23,84 +24,91 @@ import com.microsoft.store.partnercenter.servicerequests.IPartnerServiceRequestC
 import com.microsoft.store.partnercenter.usage.IPartnerUsageSummary;
 
 /**
- * The main entry point into using the partner SDK functionality. Represents a partner and encapsulates all the behavior
- * attached to partners. Use this interface to get to the partner's customers, profiles, and customer orders, profiles
- * and subscriptions and more.
+ * The main entry point into using the partner SDK functionality. Represents a
+ * partner and encapsulates all the behavior attached to partners. Use this
+ * interface to get to the partner's customers, profiles, and customer orders,
+ * profiles and subscriptions and more.
  */
-public interface IPartner
-{
-    /**
-     * Gets the partner credentials.
-     */
-    IPartnerCredentials getCredentials();
+public interface IPartner {
+	/**
+	 * Gets the analytics operations available to the partner
+	 */
+	IPartnerAnalyticsCollection getAnalytics();
 
-    /**
-     * Gets the partner context.
-     */
-    IRequestContext getRequestContext();
+	/**
+	 * Gets the partner credentials.
+	 */
+	IPartnerCredentials getCredentials();
 
-    /**
-     * Gets the collection enumerators available for traversing through results.
-     */
-    IResourceCollectionEnumeratorContainer getEnumerators();
+	/**
+	 * Gets the partner context.
+	 */
+	IRequestContext getRequestContext();
 
-    /**
-     * Gets the offer categories operations available to the partner.
-     */
-    ICountrySelector<IOfferCategoryCollection> getOfferCategories();
+	/**
+	 * Gets the collection enumerators available for traversing through results.
+	 */
+	IResourceCollectionEnumeratorContainer getEnumerators();
 
-    /**
-     * Gets the offer operations available to the partner
-     */
-    ICountrySelector<IOfferCollection> getOffers();
+	/**
+	 * Gets the offer categories operations available to the partner.
+	 */
+	ICountrySelector<IOfferCategoryCollection> getOfferCategories();
 
-    /**
-     * Gets the profiles operations available to the partner.
-     */
-    IPartnerProfileCollection getProfiles();
+	/**
+	 * Gets the offer operations available to the partner
+	 */
+	ICountrySelector<IOfferCollection> getOffers();
 
-    /**
-     * Gets the partner customers operations.
-     */
-    ICustomerCollection getCustomers();
+	/**
+	 * Gets the profiles operations available to the partner.
+	 */
+	IPartnerProfileCollection getProfiles();
 
-    /**
-     * Gets the partner's invoices.
-     */
-    IInvoiceCollection getInvoices();
+	/**
+	 * Gets the partner customers operations.
+	 */
+	ICustomerCollection getCustomers();
 
-    /**
-     * Gets the operations that can be performed on a partners' service requests
-     */
-    IPartnerServiceRequestCollection getServiceRequests();
-    
-    /***
-     * Gets the service health operations that can be performed on a partner's subscribed services.
-     */
-    IServiceIncidentCollection getServiceIncidents();
+	/**
+	 * Gets the partner's invoices.
+	 */
+	IInvoiceCollection getInvoices();
 
-    /***
-     *  Gets the country validation rules collection operations available to the partner.
-     */
-    ICountryValidationRulesCollection getCountryValidationRules();
-    
-    /**
-     * Gets the usage summary operations available to the partner.
-     */
-    IPartnerUsageSummary getUsageSummary();
+	/**
+	 * Gets the operations that can be performed on a partners' service requests
+	 */
+	IPartnerServiceRequestCollection getServiceRequests();
 
-    /***
-     * Gets the domains operations available to the partner.
-     */
-    IDomainCollection getDomains();
+	/***
+	 * Gets the service health operations that can be performed on a partner's
+	 * subscribed services.
+	 */
+	IServiceIncidentCollection getServiceIncidents();
 
-    /**
-     * Gets the audit records operations available to the partner.
-     */
-    IAuditRecordsCollection getAuditRecords();
+	/***
+	 * Gets the country validation rules collection operations available to the
+	 * partner.
+	 */
+	ICountryValidationRulesCollection getCountryValidationRules();
 
-    /***
-     * Gets the rate card operations available to the partner.
-     */
-    IRateCardCollection getRateCards();
+	/**
+	 * Gets the usage summary operations available to the partner.
+	 */
+	IPartnerUsageSummary getUsageSummary();
+
+	/***
+	 * Gets the domains operations available to the partner.
+	 */
+	IDomainCollection getDomains();
+
+	/**
+	 * Gets the audit records operations available to the partner.
+	 */
+	IAuditRecordsCollection getAuditRecords();
+
+	/***
+	 * Gets the rate card operations available to the partner.
+	 */
+	IRateCardCollection getRateCards();
 }

@@ -13,6 +13,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.microsoft.store.partnercenter.BasePartnerComponentString;
 import com.microsoft.store.partnercenter.IPartner;
 import com.microsoft.store.partnercenter.PartnerService;
+import com.microsoft.store.partnercenter.analytics.CustomerAnalyticsCollectionOperations;
+import com.microsoft.store.partnercenter.analytics.ICustomerAnalyticsCollection;
 import com.microsoft.store.partnercenter.customerdirectoryroles.DirectoryRoleCollectionOperations;
 import com.microsoft.store.partnercenter.customerdirectoryroles.IDirectoryRoleCollection;
 import com.microsoft.store.partnercenter.customers.profiles.CustomerProfileCollectionOperations;
@@ -47,173 +49,172 @@ import com.microsoft.store.partnercenter.utils.StringHelper;
 /**
  * Implements a single customer operations.
  */
-public class CustomerOperations
-    extends BasePartnerComponentString
-    implements ICustomer
-{
-    /**
-     * The customer subscriptions operations.
-     */
-    private ISubscriptionCollection subscriptions;
+public class CustomerOperations extends BasePartnerComponentString implements
+		ICustomer {
+	/**
+	 * The customer subscriptions operations.
+	 */
+	private ISubscriptionCollection subscriptions;
 
-    /**
-     * The customer orders operations.
-     */
-    private IOrderCollection orders;
+	/**
+	 * The customer orders operations.
+	 */
+	private IOrderCollection orders;
 
-    /**
-     * The customer profiles operations.
-     */
-    private ICustomerProfileCollection profiles;
+	/**
+	 * The customer profiles operations.
+	 */
+	private ICustomerProfileCollection profiles;
 
-    /**
-     * The customer service requests operations.
-     */
-    private IServiceRequestCollection serviceRequests;
+	/**
+	 * The customer service requests operations.
+	 */
+	private IServiceRequestCollection serviceRequests;
 
-    /**
-     * The customer managed services.
-     */
-    private IManagedServiceCollection managedServices;
+	/**
+	 * The customer managed services.
+	 */
+	private IManagedServiceCollection managedServices;
 
-    /***
-     * The offer operations.
-     */
-    private ICustomerOfferCollection offers;
+	/***
+	 * The offer operations.
+	 */
+	private ICustomerOfferCollection offers;
 
-    /***
-     * The offer category operations.
-     */
-    private ICustomerOfferCategoryCollection offerCategories;
+	/***
+	 * The offer category operations.
+	 */
+	private ICustomerOfferCategoryCollection offerCategories;
 
-    /**
-     * The customer summary for usage-based subscriptions operations.
-     */
-    private ICustomerUsageSummary usageSummary;
+	/**
+	 * The customer summary for usage-based subscriptions operations.
+	 */
+	private ICustomerUsageSummary usageSummary;
 
-    /**
-     * The operations for the spending budget allocated to the customer by the partner.
-     */
-    private ICustomerUsageSpendingBudget usageBudget;
+	/**
+	 * The operations for the spending budget allocated to the customer by the
+	 * partner.
+	 */
+	private ICustomerUsageSpendingBudget usageBudget;
 
-    /***
-     * The customer qualification operations.
-     */
-    private ICustomerQualification customerQualification;
+	/***
+	 * The customer qualification operations.
+	 */
+	private ICustomerQualification customerQualification;
 
-    /**
-     * The operations for the customer users associated with the customer.
-     */
-    private ICustomerUserCollection customerUserCollectionOperations;
+	/**
+	 * The operations for the customer users associated with the customer.
+	 */
+	private ICustomerUserCollection customerUserCollectionOperations;
 
-    /***
-     * The directory role collection operations.
-     */
-    private IDirectoryRoleCollection directoryRoleCollectionOperations;
+	/***
+	 * The directory role collection operations.
+	 */
+	private IDirectoryRoleCollection directoryRoleCollectionOperations;
 
-    /**
-     * The operations for the subscribed skus associated with the customer.
-     */
-    private ICustomerSubscribedSkuCollection customerSubscribedSkuCollectionOperations;
+	/**
+	 * The operations for the subscribed skus associated with the customer.
+	 */
+	private ICustomerSubscribedSkuCollection customerSubscribedSkuCollectionOperations;
 
-    private String customerId;
+	/**
+	 * The analytics collection operations.
+	 */
+	private ICustomerAnalyticsCollection customerAnalyticsCollectionOperation;
 
-    /**
-     * Initializes a new instance of the {@link #CustomerOperations} class.
-     * 
-     * @param rootPartnerOperations The root partner operations instance.
-     * @param customerId The customer Id.
-     */
-    public CustomerOperations( IPartner rootPartnerOperations, String customerId )
-    {
-        super( rootPartnerOperations, customerId );
-        if ( StringHelper.isNullOrWhiteSpace( customerId ) )
-        {
-            throw new IllegalArgumentException( "customerId must be set" );
-        }
-        this.customerId = customerId;
-    }
+	private String customerId;
 
-    /**
-     * Gets the orders behavior for the customer.
-     *
-     * @return The customer orders.
-     */
-    @Override
-    public IOrderCollection getOrders()
-    {
-        if ( this.orders == null )
-        {
-            this.orders = new OrderCollectionOperations( this.getPartner(), this.getContext() );
-        }
-        return this.orders;
-    }
+	/**
+	 * Initializes a new instance of the {@link #CustomerOperations} class.
+	 * 
+	 * @param rootPartnerOperations
+	 *            The root partner operations instance.
+	 * @param customerId
+	 *            The customer Id.
+	 */
+	public CustomerOperations(IPartner rootPartnerOperations, String customerId) {
+		super(rootPartnerOperations, customerId);
+		if (StringHelper.isNullOrWhiteSpace(customerId)) {
+			throw new IllegalArgumentException("customerId must be set");
+		}
+		this.customerId = customerId;
+	}
 
-    /**
-     * Obtains the profiles behavior for the customer.
-     * 
-     * @return The customer profiles.
-     */
-    @Override
-    public ICustomerProfileCollection getProfiles()
-    {
-        if ( this.profiles == null )
-        {
-            this.profiles = new CustomerProfileCollectionOperations( this.getPartner(), this.getContext() );
-        }
-        return this.profiles;
-    }
+	/**
+	 * Gets the orders behavior for the customer.
+	 *
+	 * @return The customer orders.
+	 */
+	@Override
+	public IOrderCollection getOrders() {
+		if (this.orders == null) {
+			this.orders = new OrderCollectionOperations(this.getPartner(),
+					this.getContext());
+		}
+		return this.orders;
+	}
 
-    @Override
-    public ISubscriptionCollection getSubscriptions()
-    {
-        if ( subscriptions == null )
-        {
-            subscriptions = new SubscriptionCollectionOperations( this.getPartner(), this.getContext() );
-        }
-        return subscriptions;
-    }
+	/**
+	 * Obtains the profiles behavior for the customer.
+	 * 
+	 * @return The customer profiles.
+	 */
+	@Override
+	public ICustomerProfileCollection getProfiles() {
+		if (this.profiles == null) {
+			this.profiles = new CustomerProfileCollectionOperations(
+					this.getPartner(), this.getContext());
+		}
+		return this.profiles;
+	}
 
-    /**
-     * Obtains the service requests behavior for the customer.
-     *
-     * @return The customer service request operations.
-     */
-    @Override
-    public IServiceRequestCollection getServiceRequests()
-    {
-        if ( this.serviceRequests == null )
-        {
-            this.serviceRequests = new CustomerServiceRequestCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.serviceRequests;
-    }
+	@Override
+	public ISubscriptionCollection getSubscriptions() {
+		if (subscriptions == null) {
+			subscriptions = new SubscriptionCollectionOperations(
+					this.getPartner(), this.getContext());
+		}
+		return subscriptions;
+	}
 
-    /**
-     * Obtains the managed services behavior for the customer.
-     *
-     * @return The customer managed services operations.
-     */
-    @Override
-    public IManagedServiceCollection getManagedServices()
-    {
-        if ( this.managedServices == null )
-        {
-            this.managedServices = new ManagedServiceCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.managedServices;
-    }
+	/**
+	 * Obtains the service requests behavior for the customer.
+	 *
+	 * @return The customer service request operations.
+	 */
+	@Override
+	public IServiceRequestCollection getServiceRequests() {
+		if (this.serviceRequests == null) {
+			this.serviceRequests = new CustomerServiceRequestCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.serviceRequests;
+	}
+
+	/**
+	 * Obtains the managed services behavior for the customer.
+	 *
+	 * @return The customer managed services operations.
+	 */
+	@Override
+	public IManagedServiceCollection getManagedServices() {
+		if (this.managedServices == null) {
+			this.managedServices = new ManagedServiceCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.managedServices;
+	}
 
 	/***
 	 * Obtains the Offer Categories behavior for the customer.
 	 */
-    @Override
+	@Override
 	public ICustomerOfferCategoryCollection getOfferCategories() {
-        if ( this.offerCategories == null )
-        {
-            this.offerCategories = new CustomerOfferCategoryCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.offerCategories;
+		if (this.offerCategories == null) {
+			this.offerCategories = new CustomerOfferCategoryCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.offerCategories;
 	}
 
 	/***
@@ -221,127 +222,136 @@ public class CustomerOperations
 	 */
 	@Override
 	public ICustomerOfferCollection getOffers() {
-        if ( this.offers == null )
-        {
-            this.offers = new CustomerOfferCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.offers;
-	}
-
-    /**
-     * Obtains the customer usage summary behavior for the customer.
-     *
-     * @return The customer usage summary operations.
-     */
-    @Override
-    public ICustomerUsageSummary getUsageSummary()
-    {
-        if ( this.usageSummary == null )
-        {
-            this.usageSummary = new CustomerUsageSummaryOperations( this.getPartner(), customerId );
-        }
-        return this.usageSummary;
-    }
-
-    /**
-     * Obtains the usage spending budget behavior for the customer.
-     *
-     * @return The customer usage spending budget operations.
-     */
-    @Override
-    public ICustomerUsageSpendingBudget getUsageBudget()
-    {
-        if ( this.usageBudget == null )
-        {
-            this.usageBudget = new CustomerUsageSpendingBudgetOperations( this.getPartner(), customerId );
-        }
-        return this.usageBudget;
-    }
-
-	/***
-	 * Obtains the Customer qualification.
-	 */
-	@Override
-	public ICustomerQualification getQualification()
-	{
-        if ( this.customerQualification == null )
-        {
-            this.customerQualification = new CustomerQualificationOperations( this.getPartner(), this.customerId );
-        }
-        return this.customerQualification;
-	}
-
-    /**
-     * Obtains the users for the customer.
-     *
-     * @return The customer usage spending budget operations.
-     */
-	@Override
-	public ICustomerUserCollection getUsers()
-	{
-        if ( this.customerUserCollectionOperations == null )
-        {
-            this.customerUserCollectionOperations = new CustomerUsersCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.customerUserCollectionOperations;
-	}
-
-	/***
-	 * Obtains the Customer qualification.
-	 */
-	@Override
-	public IDirectoryRoleCollection getDirectoryRoles()
-	{
-        if ( this.directoryRoleCollectionOperations == null )
-        {
-            this.directoryRoleCollectionOperations = new DirectoryRoleCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.directoryRoleCollectionOperations;
-	}
-
-    /**
-     * Obtains the subscribed skus for the customer.
-     *
-     * @return The customer usage spending budget operations.
-     */
-	@Override
-	public ICustomerSubscribedSkuCollection getSubscribedSkus()
-	{
-        if ( this.customerSubscribedSkuCollectionOperations == null )
-        {
-            this.customerSubscribedSkuCollectionOperations = new CustomerSubscribedSkuCollectionOperations( this.getPartner(), this.customerId );
-        }
-        return this.customerSubscribedSkuCollectionOperations;
+		if (this.offers == null) {
+			this.offers = new CustomerOfferCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.offers;
 	}
 
 	/**
-     * Retrieves information of a specific customer.
-     * 
-     * @return The customer object.
-     */
-    @Override
-    public Customer get()
-    {
-        IPartnerServiceProxy<Customer, Customer> partnerServiceProxy =
-            new PartnerServiceProxy<Customer, Customer>( new TypeReference<Customer>()
-            {
-            }, this.getPartner(), MessageFormat.format( PartnerService.getInstance().getConfiguration().getApis().get( "GetCustomer" ).getPath(),
-                                                        this.getContext(), Locale.US ) );
-        return partnerServiceProxy.get();
-    }
+	 * Obtains the customer usage summary behavior for the customer.
+	 *
+	 * @return The customer usage summary operations.
+	 */
+	@Override
+	public ICustomerUsageSummary getUsageSummary() {
+		if (this.usageSummary == null) {
+			this.usageSummary = new CustomerUsageSummaryOperations(
+					this.getPartner(), customerId);
+		}
+		return this.usageSummary;
+	}
 
-    /**
-     * Deletes the customer from a testing in production account. This won't work for real accounts.
-     */
-    @Override
-    public void delete()
-    {
-        IPartnerServiceProxy<Customer, Customer> partnerServiceProxy =
-            new PartnerServiceProxy<Customer, Customer>( new TypeReference<Customer>()
-            {
-            }, this.getPartner(), MessageFormat.format( PartnerService.getInstance().getConfiguration().getApis().get( "DeleteCustomer" ).getPath(),
-                                                        this.getContext(), Locale.US ) );
-        partnerServiceProxy.delete();
-    }
+	/**
+	 * Obtains the usage spending budget behavior for the customer.
+	 *
+	 * @return The customer usage spending budget operations.
+	 */
+	@Override
+	public ICustomerUsageSpendingBudget getUsageBudget() {
+		if (this.usageBudget == null) {
+			this.usageBudget = new CustomerUsageSpendingBudgetOperations(
+					this.getPartner(), customerId);
+		}
+		return this.usageBudget;
+	}
+
+	/***
+	 * Obtains the Customer qualification.
+	 */
+	@Override
+	public ICustomerQualification getQualification() {
+		if (this.customerQualification == null) {
+			this.customerQualification = new CustomerQualificationOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.customerQualification;
+	}
+
+	/**
+	 * Obtains the users for the customer.
+	 *
+	 * @return The customer usage spending budget operations.
+	 */
+	@Override
+	public ICustomerUserCollection getUsers() {
+		if (this.customerUserCollectionOperations == null) {
+			this.customerUserCollectionOperations = new CustomerUsersCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.customerUserCollectionOperations;
+	}
+
+	/***
+	 * Obtains the Customer qualification.
+	 */
+	@Override
+	public IDirectoryRoleCollection getDirectoryRoles() {
+		if (this.directoryRoleCollectionOperations == null) {
+			this.directoryRoleCollectionOperations = new DirectoryRoleCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.directoryRoleCollectionOperations;
+	}
+
+	/**
+	 * Obtains the subscribed skus for the customer.
+	 *
+	 * @return The customer usage spending budget operations.
+	 */
+	@Override
+	public ICustomerSubscribedSkuCollection getSubscribedSkus() {
+		if (this.customerSubscribedSkuCollectionOperations == null) {
+			this.customerSubscribedSkuCollectionOperations = new CustomerSubscribedSkuCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.customerSubscribedSkuCollectionOperations;
+	}
+
+	/**
+	 * Obtains the analytics for the customer.
+	 *
+	 * @return The customer analytics operations.
+	 */
+	@Override
+	public ICustomerAnalyticsCollection getAnalytics() {
+		if (this.customerAnalyticsCollectionOperation == null) {
+			this.customerAnalyticsCollectionOperation = new CustomerAnalyticsCollectionOperations(
+					this.getPartner(), this.customerId);
+		}
+		return this.customerAnalyticsCollectionOperation;
+	}
+
+	/**
+	 * Retrieves information of a specific customer.
+	 * 
+	 * @return The customer object.
+	 */
+	@Override
+	public Customer get() {
+		IPartnerServiceProxy<Customer, Customer> partnerServiceProxy = new PartnerServiceProxy<Customer, Customer>(
+				new TypeReference<Customer>() {
+				}, this.getPartner(), MessageFormat.format(
+						PartnerService.getInstance().getConfiguration()
+								.getApis().get("GetCustomer").getPath(),
+						this.getContext(), Locale.US));
+		return partnerServiceProxy.get();
+	}
+
+	/**
+	 * Deletes the customer from a testing in production account. This won't
+	 * work for real accounts.
+	 */
+	@Override
+	public void delete() {
+		IPartnerServiceProxy<Customer, Customer> partnerServiceProxy = new PartnerServiceProxy<Customer, Customer>(
+				new TypeReference<Customer>() {
+				}, this.getPartner(), MessageFormat.format(
+						PartnerService.getInstance().getConfiguration()
+								.getApis().get("DeleteCustomer").getPath(),
+						this.getContext(), Locale.US));
+		partnerServiceProxy.delete();
+	}
 
 }

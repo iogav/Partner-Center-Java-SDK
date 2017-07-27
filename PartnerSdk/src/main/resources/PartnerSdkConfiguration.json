@@ -431,6 +431,18 @@
             "AdditionalHeaders": {
                 "ContinuationToken": "MS-ContinuationToken"
             }
+        },
+        "GetPartnerLicensesDeployment": {
+            "Path": "analytics/licenses/deployment"
+        },
+        "GetPartnerLicensesUsage": {
+            "Path": "analytics/licenses/usage"
+        },
+        "GetCustomerLicensesDeployment": {
+            "Path": "customers/{0}/analytics/licenses/deployment"
+        },
+        "GetCustomerLicensesUsage": {
+            "Path": "customers/{0}/analytics/licenses/usage"
         }
     }
 }
