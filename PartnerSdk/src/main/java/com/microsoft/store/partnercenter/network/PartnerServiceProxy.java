@@ -525,7 +525,7 @@ public class PartnerServiceProxy<TRequest, TResponse>
         }
         catch ( IOException e )
         {
-            throw new PartnerException( e.getMessage(), this.requestContext, PartnerErrorCategory.NOT_SPECIFIED, e );
+            throw new PartnerException( e.getMessage(), this.requestContext, PartnerErrorCategory.TIMEOUT, e );
         }
 
         return this.handleResponse( response );
