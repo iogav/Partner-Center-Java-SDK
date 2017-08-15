@@ -60,7 +60,7 @@ public class UpgradeSubscription
             Upgrade selectedUpgrade = null;
             for ( Upgrade upgrade : upgrades.getItems() )
             {
-                if ( upgrade.getTargetOffer().getId() == upgradeOfferId )
+                if ( upgrade.getTargetOffer().getId().equals(upgradeOfferId) )
                 {
                     selectedUpgrade = upgrade;
                     break;
