@@ -39,9 +39,11 @@ public class GetOfferDetails
      String countryCode =
          this.getContext().getConsoleHelper().readNonEmptyString( "Enter the 2 digit country code to get its supported offers",
                                                                   "The country code can't be empty" );
-     this.getContext().getConsoleHelper().startProgress( MessageFormat.format( "Getting offers for {0}",
-                                                                               countryCode ) );
-     Offer offer = partnerOperations.getOffers().byCountry( countryCode ).byId( "8AA7E78B-B265-4AC6-ADA0-14900A8A3F94" ).get();
+     String offerId =
+             this.getContext().getConsoleHelper().readNonEmptyString( "Enter the Offer ID",
+                                                                      "The offer ID can't be empty" );
+     this.getContext().getConsoleHelper().startProgress( MessageFormat.format( "Getting details for offer {0}", offerId ) );
+     Offer offer = partnerOperations.getOffers().byCountry( countryCode ).byId(offerId).get();
      this.getContext().getConsoleHelper().stopProgress();
      this.getContext().getConsoleHelper().writeObject( offer, "Offers details" );
  }
