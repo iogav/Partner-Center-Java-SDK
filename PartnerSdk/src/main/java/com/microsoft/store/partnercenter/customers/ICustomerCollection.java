@@ -40,6 +40,14 @@ public interface ICustomerCollection
      * @return The customer operations.
      */
     ICustomer byId( String customerId );
+    
+    /***
+     * Create a new customer.
+     * 
+     * @param newCustomer The new custommer information.
+     * @return The customer that was just created.
+     */
+    Customer create(Customer newCustomer);
 
     /***
      * Retrieves all the partner's customers.
