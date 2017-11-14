@@ -85,6 +85,7 @@ import com.microsoft.store.partnercenter.samples.servicerequests.GetServiceReque
 import com.microsoft.store.partnercenter.samples.servicerequests.UpdatePartnerServiceRequest;
 import com.microsoft.store.partnercenter.samples.subscriptions.AddSubscriptionAddOn;
 import com.microsoft.store.partnercenter.samples.subscriptions.GetSubscription;
+import com.microsoft.store.partnercenter.samples.subscriptions.GetSubscriptionProvisioningStatus;
 import com.microsoft.store.partnercenter.samples.subscriptions.GetSubscriptions;
 import com.microsoft.store.partnercenter.samples.subscriptions.GetSubscriptionsByOrder;
 import com.microsoft.store.partnercenter.samples.subscriptions.UpdateSubscription;
@@ -214,6 +215,8 @@ public class Program {
 		subscriptionScenarios.add(new UpdateSubscription(context));
 		subscriptionScenarios.add(new UpgradeSubscription(context));
 		subscriptionScenarios.add(new AddSubscriptionAddOn(context));
+		subscriptionScenarios
+				.add(new GetSubscriptionProvisioningStatus(context));
 		return new AggregatePartnerScenario("Subscription samples",
 				subscriptionScenarios, context);
 	}
